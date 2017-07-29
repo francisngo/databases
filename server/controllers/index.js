@@ -8,16 +8,13 @@ var headers = {
   'Content-Type': 'application/json'
 };
 
-var sendResponse = function(response, data, statusCode) {
-  statusCode = statusCode || 200;
-  response.writeHead(statusCode, headers);
-  response.end(JSON.stringify(data));
-};
-
 module.exports = {
   messages: {
     get: function (request, response) {
-      response.end('harambe lives in our hearts');
+      models.messages.get(function(err, results) {
+        if (err) { throw err; }
+        response.json(results);
+      });
     },
     post: function (request, response) {
 
@@ -25,8 +22,6 @@ module.exports = {
 
       models.messages.post(params, function(err, results) {
         if (err) { throw err; }
-        statusCode = 201;
-        // sendResponse(response, results, statusCode);
         response.sendStatus(201);
       });
     }
@@ -40,9 +35,12 @@ module.exports = {
       //call sendResponse, passing in our response, data, and statusCode
     },
     post: function (request, response) {
-      //use collectData to collect data from post request
-      //add user to database with models.users.post()
-      //send response with response, user as data, status code of 201
+      var params = [request.body.username];
+
+      models.users.post(params, function(err, results) {
+        if (err) { throw err; }
+        response.sendStatus(201);
+      });
     }
   }
 };
