@@ -14,30 +14,22 @@ var sendResponse = function(response, data, statusCode) {
   response.end(JSON.stringify(data));
 };
 
-var collectData = function(request, callback) {
-  var data = '';
-  request.on('data', function(chunk) {
-    data += chunk;
-  });
-  request.on('end', function() {
-    callback(JSON.parse(data));
-  });
-};
-
 module.exports = {
   messages: {
     get: function (request, response) {
-      //get data from mysql database
-      //call models.messages.get() this should return our data
-      //call sendResponse, passing in our response, data, and statusCode of 200
       response.end('harambe lives in our hearts');
-    }, // a function which handles a get request for all messages
+    },
     post: function (request, response) {
-      //collect data from the post request by calling collectData().
-      //add message to database by calling models.messages.post()
-      //send response with status code of 201, data the message, the response
-      response.end('you don\'t post harambe, harambe posts you.');
-    } // a function which handles posting a message to the database
+
+      var params = [request.body.text, request.body.username, request.body.roomname];
+
+      models.messages.post(params, function(err, results) {
+        if (err) { throw err; }
+        statusCode = 201;
+        // sendResponse(response, results, statusCode);
+        response.sendStatus(201);
+      });
+    }
   },
 
   users: {

@@ -8,9 +8,12 @@ module.exports = {
       //push all messages into results array/object
       //return array/object
     }, // a function which produces all the messages
-    post: function (message) {
-      //insert message object inside messages table
-    } // a function which can be used to insert a message into the database
+    post: function (params, callback) {
+      var queryStr = 'INSERT INTO messages (text, username, roomname) VALUES (?, ?, ?)';
+      db.query(queryStr, params, function(err, results) {
+        callback(err, results);
+      });
+    }
   },
 
   users: {
@@ -26,3 +29,5 @@ module.exports = {
     }
   }
 };
+
+//40, 15, 42, 12
