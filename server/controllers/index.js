@@ -17,9 +17,7 @@ module.exports = {
       });
     },
     post: function (request, response) {
-
       var params = [request.body.text, request.body.username, request.body.roomname];
-
       models.messages.post(params, function(err, results) {
         if (err) { throw err; }
         response.sendStatus(201);
@@ -28,15 +26,14 @@ module.exports = {
   },
 
   users: {
-    // Ditto as above
     get: function (request, response) {
-      //data = models.users.get();
-      //statusCode = 200;
-      //call sendResponse, passing in our response, data, and statusCode
+      models.users.get(function(err, results) {
+        if (err) { throw err; }
+        response.json(results);
+      });
     },
     post: function (request, response) {
       var params = [request.body.username];
-
       models.users.post(params, function(err, results) {
         if (err) { throw err; }
         response.sendStatus(201);

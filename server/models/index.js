@@ -7,7 +7,7 @@ module.exports = {
       db.query(queryStr, function(err, results) {
         callback(err, results);
       });
-    }, // a function which produces all the messages
+    },
     post: function (params, callback) {
       var queryStr = 'INSERT INTO messages (text, username, roomname) VALUES (?, ?, ?)';
       db.query(queryStr, params, function(err, results) {
@@ -17,12 +17,11 @@ module.exports = {
   },
 
   users: {
-    // Ditto as above.
-    get: function () {
-      //create a results array to store all user data
-      //query database to get all users
-      //push all messages in results array/object
-      //return array/object
+    get: function (callback) {
+      var queryStr = 'SELECT * FROM users';
+      db.query(queryStr, function(err, results) {
+        callback(err, results);
+      });
     },
     post: function (params, callback) {
       var queryStr = 'INSERT INTO users (username) values (?)';
